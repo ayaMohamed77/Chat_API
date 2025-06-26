@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+vosk
+soundfile
+openai
+pygame
+python-multipart
+aiofiles
