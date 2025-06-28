@@ -1,9 +1,12 @@
 from openai import OpenAI
 
+import os
+
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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"
+    api_key=os.getenv("OPENROUTER_API_KEY")
 )
+
 
 def ask_bot(prompt: str) -> str:
     system_prompt = (
