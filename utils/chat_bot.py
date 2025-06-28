@@ -9,6 +9,8 @@ client = OpenAI(
 
 
 def ask_bot(prompt: str) -> str:
+    import os
+    print("API KEY ===>", os.getenv("OPENROUTER_API_KEY"))
     system_prompt = (
         "You are a helpful assistant that only answers questions about Alzheimer's disease. "
         "If the user asks about anything else, respond with 'I am sorry I'm a specialized Ai Assistant in Alzheimer's disease.'"
@@ -20,5 +22,8 @@ def ask_bot(prompt: str) -> str:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
         ]
+
     )
+
+
     return response.choices[0].message.content
