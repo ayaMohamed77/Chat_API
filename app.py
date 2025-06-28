@@ -7,3 +7,8 @@ app = FastAPI()
 
 app.include_router(voice_router)
 app.include_router(text_router)
+
+
+@app.get("/")
+def root():
+    return {"message": "Ayouta API is running 🦋"}
