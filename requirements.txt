@@ -7,3 +7,4 @@ openai
 pygame
 python-multipart
 aiofiles
+pydub
