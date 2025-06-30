@@ -32,11 +32,9 @@ async def chat_with_voice(file: UploadFile = File(...)):
         if not question:
             return {"error": "No speech detected."}
 
-        answer = ask_bot(question)
 
         return {
             "question": question,
-            "answer": answer
         }
 
     except Exception as e:
