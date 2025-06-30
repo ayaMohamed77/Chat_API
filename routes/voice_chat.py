@@ -1,23 +1,20 @@
-# routes/voice_chat.py
-
 from fastapi import APIRouter, UploadFile, File
 import uuid
 from pydub import AudioSegment
 import os
 from utils.stt import voice_to_text
-from utils.chat_bot import ask_bot
 
 router = APIRouter()
 
 @router.post("/chat-voice/")
 async def chat_with_voice(file: UploadFile = File(...)):
-
-    temp_filename = f"temp_audio_{uuid.uuid4()}.wav"
+    file_extension = file.filename.split(".")[-1]
+    temp_filename = f"temp_audio_{uuid.uuid4()}.{file_extension}"
     with open(temp_filename, "wb") as buffer:
         buffer.write(await file.read())
 
     def convert_audio_to_wav_16000_mono(input_path: str) -> str:
-        output_path = input_path.replace(".", "_converted.")
+        output_path = input_path.rsplit(".", 1)[0] + "_converted.wav"
         audio = AudioSegment.from_file(input_path)
         audio = audio.set_channels(1)
         audio = audio.set_frame_rate(16000)
@@ -32,16 +29,14 @@ async def chat_with_voice(file: UploadFile = File(...)):
         if not question:
             return {"error": "No speech detected."}
 
-
         return {
-            "question": question,
+            "transcription": question
         }
 
     except Exception as e:
         return {"error": str(e)}
 
     finally:
-        if os.path.exists(temp_filename):
-            os.remove(temp_filename)
-        if os.path.exists(converted_path):
-            os.remove(converted_path)
+        for path in [temp_filename, converted_path]:
+            if os.path.exists(path):
+                os.remove(path)
